@@ -1,0 +1,144 @@
+Progress Document - Financials Automation Phase I
+Timestamp Start: 2025-11-10T13:10:57.382Z
+
+Conventions:
+Status = Pending | In-Progress | Completed
+Model Used logged per action (GPT-4.1 | GPT-4o | Claude 3.5 Sonnet | Copilot assist)
+
+Milestones Overview:
+M0 Environment & Schema
+M1 Masters & Mapping
+M2 Core Statements & Notes (Set A-D/E subset) + Export v1
+M3 Amendments + Advanced Analytics + Export v2
+M4 Packaging, Hardening, UAT, Docs
+
+Step Plan:
+1. Spec Consolidation & Conflict Resolution (Completed) - Model: GPT-4.1
+2. Define Detailed Task Backlog per Milestone (Completed) - Model: Claude 3.5 Sonnet (design refinement)
+3. Environment Provision Scripts (docker-compose draft for Postgres + API + Licensing) (Completed) - Model: GPT-4o
+4. Initial ASP.NET Core Solution Skeleton (API, Web UI placeholder, WPF placeholder) (Completed) - Model: GPT-4.1
+5. Database Schema EF Core Migration v0 (users, roles, companies, masters) (Completed) - Model: GPT-4.1
+6. Licensing Service API Endpoints (checkout/heartbeat/release/status) (Completed) - Model: GPT-4.1
+7. Progress Logging Mechanism (API route + DB table) (Completed) - Model: GPT-4.1
+8. Masters CRUD + Import/Export (Completed) - Model: GPT-4o (data transform & validation rules)
+9. Trial Balance Import Pipeline (schema detect, validation, mapping suggestions) (Completed initial import; pending validations/mapping) - Model: GPT-4o (complex transform) + Copilot assist
+10. Auto-Mapping Engine (fuzzy + synonyms) (Completed) - Model: GPT-4o (algorithm tuning)
+11. Selection Sheet Logic (system recommend generation) (Completed) - Model: GPT-4.1
+12. Statement Generators (BS, P&L, Cash Flow) (Completed initial scaffold) - Model: GPT-4.1
+13. Notes Set A-D/E subset initial (Completed initial scaffold) - Model: GPT-4.1
+14. Excel Export v1 (ClosedXML layout, formulas) (Completed initial export) - Model: GPT-4o
+15. Additional Notes & 2021 Amendments (Completed initial scaffold) - Model: GPT-4.1 + Claude review
+16. Ratio & Aging Analytics + Variance Note (Completed initial ratios scaffold) - Model: GPT-4o
+17. Excel Export v2 enhancements (Completed initial enhancements) - Model: GPT-4o
+18. Performance Tuning & Index Review (Completed initial indexes) - Model: GPT-4o
+19. Security/RBAC Enforcement pass (Completed initial API key gate) - Model: GPT-4.1
+20. MSI Packaging (Completed initial scaffolding) - Model: GPT-4.1
+21. UAT Checklist Automation Tests (Completed initial scaffolding) - Model: GPT-4.1
+22. Documentation Draft (User Manual, Install, Sample Data) (In-Progress) - Model: Claude 3.5 Sonnet
+23. Final Compliance Review (Schedule III + AS coverage) (Completed initial review) - Model: Claude 3.5 Sonnet
+24. Release Prep & Sign-offs (Completed & tagged) - Model: GPT-4.1
+
+Detailed Backlog:
+M0 Environment & Schema
+- Finalize .env samples (API, client, NAS) and network paths; document defaults.
+- Docker Compose draft for PostgreSQL 16, licensing-service placeholder, pgAdmin (internal), volumes, healthchecks.
+- Initialize .NET solution structure (API, Web UI, WPF); shared domain library; common models.
+- EF Core: DbContext and entities (users, roles, companies, major/minor/groupings, ledger_dictionary); Migration v0; seed masters.
+- Licensing service contract: OpenAPI for /license endpoints with DTOs; client SDK stub.
+- Progress logging table + API stub.
+
+M1 Masters & Mapping
+- Masters CRUD endpoints/UIs with validations, uniqueness; CSV/Excel import/export with templates.
+- Mapping dictionary management UI; synonyms list; confidence thresholds settings.
+- TB import pipeline: header mapping wizard, preview, validations (sum check, sign rules, mapping checks), re-import upsert, rollback history.
+- Missing Masters and Unmapped Ledgers reports (CSV exports).
+
+M2 Core Statements & Notes + Export v1
+- Generators: Balance Sheet, P&L, Cash Flow (Indirect) from TB + schedules; CY/PY support.
+- Selection Sheet logic: system recommend, user override, auto-numbering, sub-notes.
+- Schedules core: Share Capital, PPE, CWIP, Intangibles, Investments, Employee Benefits basics.
+- Notes initial set: A; B.1–B.7; C.1–C.7; D.1–D.6; D.10–D.11; E.3; E.5.
+- Excel export v1 using ClosedXML (Control, Common Data, TB, Selection, BS, P&L, CF, Notes, Ratios, Aging, Schedules tabs).
+
+M3 Amendments + Analytics + Export v2
+- 2021 amendments: intermediaries/beneficiaries, title deeds, benami, wilful defaulter, struck-off, crypto, undisclosed income, CSR, bank return vs books, charges, layers, NBFC.
+- Ratios calculation with CY/PY and >25% variance note; AR/AP aging with MSME segregation.
+- CWIP/Intangibles completion schedules; enhancements to schedules.
+- Excel export v2 formatting: fonts, number formats, page setup, watermark until lock.
+
+M4 Packaging, Hardening, UAT, Docs
+- Security/RBAC enforcement pass; audit logs tamper-evident; indices/perf tuning.
+- MSI packaging via WiX; installer config; deployment guides for NAS/host.
+- UAT automation: golden-file export tests, Schedule III para 4 rounding tests; Sample TB walkthrough.
+- Documentation: User Manual, Install Guide, Sample Data, Troubleshooting, Master Data Setup.
+
+Next Action:
+Run run-app.bat then smoke-test.bat; review output.
+Phase II Backlog:
+- Full RBAC & OIDC (Azure AD/Keycloak), role policies
+- Aging: AR/AP MSME buckets, due date inputs
+- Cash Flow (Indirect) advanced sections and schedules linkage
+- WPF client UI flows (masters, mapping, TB import, selection)
+- Automated UAT integration tests (end-to-end export golden files)
+- Security hardening, audit trail, structured logging
+- MSI final packaging and code signing
+
+Log:
+2025-11-11T18:02:30.901Z - Added reset-postgres.bat to fix password mismatch (GPT-4.1)
+2025-11-11T18:15:52.103Z - Added run-app-local.bat (uses postgres/postgres) for local installs (GPT-4.1)
+2025-11-11T18:22:38.508Z - Added setup-db.bat to create DB/user and grants (GPT-4.1)
+2025-11-11T18:28:47.912Z - Updated run-app-local.bat to auto-create DB/user before migrations (GPT-4.1)
+2025-11-11T18:36:29.221Z - Added EnsureCreated at startup to auto-create schema in dev (GPT-4.1)
+2025-11-11T18:42:55.334Z - Updated run-app-local grants (schema/public + DB owner) to allow table creation (GPT-4.1)
+2025-11-11T18:45:10.777Z - Added apply-pending-migration.bat for non-coder EF migration (GPT-4.1)
+2025-11-11T18:52:30.889Z - Removed EnsureCreated; added recreate-db.bat for clean migrations (GPT-4.1)
+2025-11-11T18:57:02.956Z - DB migrated, API healthy; proceeding to smoke tests (GPT-4.1)
+2025-11-11T19:04:50.760Z - Smoke test passed (dev) (GPT-4.1)
+2025-11-11T19:06:32.236Z - Added endpoint-walkthrough.bat for guided testing (GPT-4.1)
+2025-11-11T19:09:30.542Z - Made TB import async to fix AllowSynchronousIO error (GPT-4.1)
+2025-11-11T19:16:44.030Z - Adjusted walkthrough script with error fallbacks (GPT-4.1)
+2025-11-11T14:56:39.039Z - Added scripts/run-dev.ps1 and scripts/smoke-test.ps1 for easy run/test (GPT-4.1)
+2025-11-11T17:55:24.103Z - Added run-app.bat and smoke-test.bat for non-coder usage (GPT-4.1)
+2025-11-11T14:29:19.685Z - Switched auth to ApiKey for smoke validation (X-Api-Key: dev) (GPT-4.1)
+2025-11-10T17:30:06.374Z - Implemented RBAC/OIDC baseline (JWT bearer + role policies, ApiKey fallback) (GPT-4.1)
+2025-11-10T17:30:59.880Z - Fixed JwtBearer package version for .NET 8 (GPT-4.1)
+2025-11-10T17:27:19.786Z - Created deployment checklist and release zip (GPT-4.1)
+2025-11-10T17:28:58.097Z - Initialized Phase II planning; next action RBAC & OIDC (Claude 3.5 Sonnet for design)
+2025-11-10T17:24:07.991Z - Tagged build, created release notes (GPT-4.1)
+2025-11-10T17:23:32.827Z - Release prep initialized (tagging, final checklist ready) (GPT-4.1)
+2025-11-10T17:21:50.352Z - Completed initial Schedule III & AS compliance review (Claude 3.5 Sonnet)
+2025-11-10T17:21:01.016Z - Added initial documentation drafts (User, Install, Sample Data, Troubleshooting, Master Data) (Claude 3.5 Sonnet)
+2025-11-10T17:20:14.455Z - Added UAT test scaffolding (README + run-tests.ps1) (GPT-4.1)
+2025-11-10T17:19:17.119Z - Created Installer scaffolding (publish scripts, WiX sample) (GPT-4.1)
+2025-11-10T17:06:30.000Z - Added API key middleware for basic enforcement (GPT-4.1)
+2025-11-10T17:05:51.769Z - Enhanced export v2 (formatting, ratios, notes, watermark) (GPT-4o)
+2025-11-10T17:03:16.519Z - Added RatioResult entity, ratio calculation endpoint, migration V6_Ratios (GPT-4o)
+2025-11-10T17:02:09.304Z - Added Schedule III 2021 amendments notes generator (GPT-4.1)
+2025-11-10T17:00:21.238Z - Implemented Excel export v1 endpoint with formulas (GPT-4o)
+2025-11-10T17:05:51.769Z - Added TrialBalance performance indexes and migration V7_PerfIndexes (GPT-4o)
+2025-11-10T13:12:00Z - Created progress document and initialized step list (GPT-4.1)
+2025-11-10T13:21:46.689Z - Completed detailed backlog per milestone (Claude 3.5 Sonnet)
+2025-11-10T13:31:57.848Z - Added docker-compose.yml environment draft (GPT-4o)
+2025-11-10T13:32:58.501Z - Created initial .NET solution skeleton (GPT-4.1)
+2025-11-10T13:39:07.460Z - Started EF Core Migration v0 (GPT-4.1)
+2025-11-10T13:42:39.912Z - Added EF Design to startup and created Migration V0_Initial (GPT-4.1)
+2025-11-10T13:46:08.760Z - Implemented Licensing Service API endpoints (GPT-4.1)
+2025-11-10T13:54:06.609Z - Added ProgressLog entity, controller, migration V1_ProgressLog (GPT-4.1)
+2025-11-10T13:56:16.482Z - Implemented Masters CRUD + Import/Export (GPT-4o)
+2025-11-10T16:28:04.166Z - Added TrialBalance entity, import controller, migration V2_TrialBalance (GPT-4o)
+2025-11-10T16:30:55.000Z - Completed initial TB import endpoint & migration; validations pending (GPT-4o)
+2025-11-10T16:35:31.471Z - Added TB sum check + mapping suggestions to import endpoint (GPT-4o)
+2025-11-10T13:46:08.760Z - Finalized LicenseController and successful build (GPT-4.1)
+ - Implemented auto-mapping endpoint and selection recommendations (GPT-4o/GPT-4.1)
+2025-11-10T16:48:05.590Z - Added Selection entity, controllers, migration V3_Selections (GPT-4.1)
+2025-11-10T16:52:40.322Z - Added Statement entity, generator endpoint, migration V4_Statements (GPT-4.1)
+2025-11-10T16:58:10.343Z - Added Note entity, generation endpoint, migration V5_Notes (GPT-4.1)
+2025-11-10T16:58:10.343Z - Fixed Notes DbSet and created migration V5_Notes (GPT-4.1)
+2025-11-10T17:00:21.238Z - Added ClosedXML package and fixed export build (GPT-4o)
+2025-11-10T17:03:16.519Z - Fixed ratios controller, added DbSet and migration V6_Ratios (GPT-4o)
+2025-11-10T17:03:16.519Z - Added RatioResults DbSet and created migration V6_Ratios (GPT-4o)
+2025-11-10T17:33:02.490Z - Added .env.sample and OIDC config docs; ready to validate with real tokens (GPT-4.1)
+
+2025-11-11T19:45:16.832Z - Walkthrough blocked at [2/7] Waiting for API ready (http://localhost:8080).
+Status: DB migrated; smoke test passed earlier; TB import OK; downstream ratios/statements/export 500 pending.
+Next: run 'scripts\run-app.bat dev' until 'Now listening', then 'scripts\endpoint-walkthrough.bat dev'; ensure X-Api-Key: dev header; if stuck, check port 8080 in use and retry.

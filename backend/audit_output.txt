@@ -1,0 +1,20 @@
+--- ULTIMATE DATABASE AUDIT ---
+Databases available:
+- postgres (OID: 5)
+- finautomatedb (OID: 16394)
+
+--- Inspecting Database: postgres ---
+[postgres] No user-defined tables found.
+
+--- Inspecting Database: finautomatedb ---
+[finautomatedb] "public"."FinancialEntity": 5 rows
+!!! MATCH !!! DB: finautomatedb, Table: "public"."FinancialEntity", Column: name, Matches: 3
+!!! MATCH !!! DB: finautomatedb, Table: "public"."FinancialEntity", Column: data, Matches: 2
+!!! MATCH !!! DB: finautomatedb, Table: "public"."FinancialEntity", Column: companyCode, Matches: 1
+[finautomatedb] "public"."PendingChange": 0 rows
+[finautomatedb] "public"."CaroReport": 0 rows
+[finautomatedb] "public"."TaxAuditReport": 0 rows
+[finautomatedb] "public"."AuditLog": 47 rows
+!!! MATCH !!! DB: finautomatedb, Table: "public"."AuditLog", Column: details, Matches: 2
+[finautomatedb] "public"."Tenant": 2 rows
+[finautomatedb] "public"."User": 3 rows

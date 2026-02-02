@@ -1,0 +1,5 @@
+{
+  "name": "Financials Automation - Mapping Workbench",
+  "description": "An intelligent workbench for mapping trial balance ledgers to financial statement heads using AI-powered suggestions. This is Phase I of a larger financial automation tool, focusing on the core mapping workflow.",
+  "requestFramePermissions": []
+}

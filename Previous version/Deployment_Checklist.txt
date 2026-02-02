@@ -1,0 +1,33 @@
+Deployment Checklist – Financials Automation Phase I
+Timestamp: 2025-11-10T17:27:19.786Z
+
+Prerequisites
+- Windows 10/11 host with .NET 8 SDK and PowerShell 5+
+- PostgreSQL 16 (or use docker-compose provided)
+- API_KEY value for API requests
+- Optional: WiX Toolset v4 for MSI build
+
+Steps
+1) Database
+   - Set env vars (POSTGRES_*). If using Docker: run `docker-compose up -d postgres pgadmin`.
+   - Apply migrations: `dotnet ef database update` (from D:\Financial_Automaton\src, Api as startup).
+2) Services
+   - Start Licensing Service (container or dotnet run in src\FinancialsAutomation.LicensingService).
+   - Start API: set X-Api-Key in client and `dotnet run` in src\FinancialsAutomation.Api.
+3) Initial Data
+   - Create masters via /masters endpoints or import CSVs.
+   - Import TB CSV: POST /tb/import/{companyId}/{year} (text/csv).
+   - Auto-map: POST /mapping/auto-apply/{companyId}/{year}.
+4) Generate
+   - POST /statements/generate …; POST /notes/generate …; POST /notes/amendments/generate …; POST /ratios/calculate …
+   - GET /export/xlsx/{companyId}/{year} and validate Balanced=Yes.
+5) Packaging
+   - Publish: run src\Installer\publish-api.ps1 and publish-wpf.ps1 (optional).
+   - MSI: author src\Installer\Product.wxs.sample and build via WiX.
+6) Security
+   - Replace dev API key middleware with proper auth before production rollout.
+7) Smoke Tests
+   - TB import sum check 0 errors; statements Balanced=Yes; ratios variance flags appear; Excel has required sheets.
+
+Artifacts
+- See release\phase1-initial.zip (docs, installer scripts, compose, notes).

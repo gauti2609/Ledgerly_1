@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  action     String
+  entityId   String?
+  entityType String?
+  details    String?
+  userId     String
+  timestamp  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model CaroReport {
+  id                String          @id @default(uuid())
+  financialEntityId String          @unique
+  clauseData        String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  FinancialEntity   FinancialEntity @relation(fields: [financialEntityId], references: [id], onDelete: Cascade)
+}
+
+model FinancialEntity {
+  id                                  String          @id @default(uuid())
+  name                                String
+  entityType                          String
+  data                                String?
+  decimalPlaces                       Int             @default(2)
+  financialYear                       String          @default("2024-2025")
+  companyCode                         String
+  tenantId                            String?
+  userId                              String
+  isSoftDeleted                       Boolean         @default(false)
+  deletedAt                           DateTime?
+  createdAt                           DateTime        @default(now())
+  updatedAt                           DateTime        @updatedAt
+  CaroReport                          CaroReport?
+  Tenant                              Tenant?         @relation(fields: [tenantId], references: [id])
+  User_FinancialEntity_userIdToUser   User            @relation("FinancialEntity_userIdToUser", fields: [userId], references: [id], onDelete: Cascade)
+  PendingChange                       PendingChange[]
+  TaxAuditReport                      TaxAuditReport?
+  User_User_entityIdToFinancialEntity User[]          @relation("User_entityIdToFinancialEntity")
+
+  @@index([tenantId])
+  @@index([userId])
+}
+
+model PendingChange {
+  id                String          @id @default(uuid())
+  financialEntityId String
+  userId            String
+  type              String
+  data              String?
+  status            String          @default("PENDING")
+  reviewedBy        String?
+  reviewedAt        DateTime?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  FinancialEntity   FinancialEntity @relation(fields: [financialEntityId], references: [id])
+  reviewer          User?           @relation("PendingChange_reviewedByToUser", fields: [reviewedBy], references: [id])
+  creator           User            @relation("PendingChange_userIdToUser", fields: [userId], references: [id])
+
+  @@index([financialEntityId])
+}
+
+model TaxAuditReport {
+  id                String          @id @default(uuid())
+  financialEntityId String          @unique
+  clauseData        String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  FinancialEntity   FinancialEntity @relation(fields: [financialEntityId], references: [id], onDelete: Cascade)
+}
+
+model Tenant {
+  id              String            @id @default(uuid())
+  name            String
+  type            String            @default("OTHER")
+  isSuspended     Boolean           @default(false)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  FinancialEntity FinancialEntity[]
+  User            User[]
+}
+
+model User {
+  id                                             String            @id @default(uuid())
+  email                                          String            @unique
+  password                                       String
+  role                                           String            @default("MANAGER")
+  tenantId                                       String?
+  entityId                                       String?
+  createdAt                                      DateTime          @default(now())
+  updatedAt                                      DateTime          @updatedAt
+  AuditLog                                       AuditLog[]
+  FinancialEntity_FinancialEntity_userIdToUser   FinancialEntity[] @relation("FinancialEntity_userIdToUser")
+  PendingChange_PendingChange_reviewedByToUser   PendingChange[]   @relation("PendingChange_reviewedByToUser")
+  PendingChange_PendingChange_userIdToUser       PendingChange[]   @relation("PendingChange_userIdToUser")
+  FinancialEntity_User_entityIdToFinancialEntity FinancialEntity?  @relation("User_entityIdToFinancialEntity", fields: [entityId], references: [id])
+  Tenant                                         Tenant?           @relation(fields: [tenantId], references: [id])
+}

@@ -1,0 +1,85 @@
+# FinAutomate Implementation Tasks
+
+- [ ] **1. Resolved Issues & Bug Fixes**
+    - [x] **A. Safe Navigation (Crash Prevention)**
+        - [x] Create `components/ErrorBoundary.tsx`
+        - [x] Update `components/reports/BalanceSheet.tsx` with safe navigation & loading checks
+        - [x] Update `components/reports/ProfitAndLossStatement.tsx` with safe navigation & loading checks
+        - [x] Update `components/reports/CashFlowStatement.tsx` with safe navigation & loading checks
+        - [x] Update `pages/ReportsPage.tsx` to use ErrorBoundary
+- [x] **PPE & Intangible Assets**: Update `PPESchedule.tsx`, `IntangibleAssetsSchedule.tsx` and Note components
+- [x] **Share Capital**: Update `ShareCapitalSchedule.tsx` and Note component
+- [x] **Cash & Cash Equivalents**: Update `CashAndCashEquivalentsSchedule.tsx` and Note component
+- [x] **Investments**: Update `InvestmentsSchedule.tsx` and Note component
+- [x] **Loans & Advances**: Update `LoansAndAdvancesSchedule.tsx` and Note component
+- [x] **Leases**: Update `LeasesSchedule.tsx` and Note component
+- [x] **Discontinuing Operations**: Update `DiscontinuingOperationsSchedule.tsx` and Note component
+- [x] **Amalgamations**: Update `AmalgamationsSchedule.tsx` and Note component
+- [x] **Additional Regulatory Info**: Update `AdditionalRegulatoryInfoSchedule.tsx` and Note component
+- [x] **Events After Balance Sheet**: Update `EventsAfterBalanceSheetNote.tsx` (Schedule & Note)
+- [x] **Ratio Analysis**: Update `RatioAnalysisExplanations.tsx` and `RatioAnalysis.tsx`
+- [x] Refactor `ProfitAndLossStatement.tsx` to use `getScheduleTotal` and consistent Groupings
+- [x] Extend `scheduleAutoPopulate.ts` for P&L items
+- [x] Update `SchedulesPage.tsx` to enable Auto-Fill for P&L
+- [x] Extend `scheduleAutoPopulate.ts` to cover remaining schedules (Investments, Loans, Provisions, Other Assets/Liabilities, CWIP, Intangibles) `scheduleAutoPopulate.ts`
+- [ ] Implement "Auto-Fill All" button in `SchedulesPage.tsx`
+- [x] **3. Multi-Year Support & Usability**
+    - [x] **A. Schema Updates (SQLite Compatible)**
+        - [x] Update `schema.prisma` (String inputs instead of Enums/Json)
+        - [x] Add `financialYear`, `companyCode` to FinancialEntity
+    - [x] **B. Duplicate Detection**
+        - [x] Update `financial-entity.service.ts` create logic
+        - [x] Add confirmation flow in UI
+    - [x] **C. Frontend Features**
+        - [x] Entity Search Bar (`DashboardPage.tsx`)
+        - [x] Group Entities by Company (`DashboardPage.tsx`)
+        - [x] State Persistence (App & MainApp)
+- [ ] Implement Global Number Formatting (Context & UI) `User Request`
+- [ ] Verify `BalanceSheet.tsx` uses `getScheduleTotal` for these new supported schedules
+- [ ] Verify Data Flow for all new items
+    - [x] **C. Backend Validation**
+        - [x] Create `backend/src/validation/validation.module.ts`
+        - [x] Create `backend/src/validation/validation.service.ts`
+        - [x] Update `backend/src/financial-entity/financial-entity.service.ts` to use validation
+        - [x] Update `backend/src/app.module.ts` to import validation module
+    - [x] **D. Startup Fix**
+        - [x] Fix circular import in `services/approvalService.ts` (Implemented cleanly in new file)
+        - [x] Debug Frontend Crash (500 Internal Server Error)
+        - [x] Identify root cause (Build failure due to deprecated Role enum)
+        - [x] Remove deprecated enum usages in source code
+        - [x] Verify successful build and server restart
+
+- [x] **4. Data Flow Diligence (Schedules -> Notes)**
+    - [x] **A. High Complexity / Manual Input Audit**
+        - [x] Verify `AdditionalRegulatoryInfo` (Benami Property Data Loss, Fund Utilisation Missing)
+        - [x] Verify `RelatedParty` (Missing Balances)
+        - [x] Verify `Leases` (Correct)
+        - [x] Verify `ContingentLiabilities` (Correct)
+        - [x] Verify `EmployeeBenefits` (P&L Inputs Ignored)
+    - [x] **B. Standard Schedule Audit**
+        - [x] Verify `ShareCapital` & `OtherEquity`
+        - [ ] Verify `Borrowings` & `Provisions`
+        - [x] Verify `PPE`, `Intangible`, `CWIP`
+        - [x] Verify `TradeReceivables` & `TradePayables`
+    - [x] **Generic Note Audit**
+        - [x] Verify `GenericNote` usage (Revenue, Other Income, Expenses)
+    - [x] **D. Rectification of Identified Issues**
+        - [x] Fix `AdditionalRegulatoryInfo` (Benami Table, Fund Utilisation, CSR Checkbox)
+        - [x] Fix `RelatedParty` (Add Balances Table)
+        - [x] Fix `EmployeeBenefits` (Prioritize Manual Inputs)
+
+- [ ] **2. New Features**
+    - [x] **A. Approval Workflow**
+        - [x] Verify/Create `backend/src/pending-changes/*` (Module/Service/Controller - Verified)
+        - [x] Create `components/ApprovalDashboard.tsx` (Implemented as ApprovalWorkflow.tsx)
+        - [x] Update `pages/DashboardPage.tsx` with link to Approvals (Via MainApp/Sidebar)
+    - [x] **B. Excel Export**
+        - [x] Update `services/exportService.ts` with `xlsx-js-style` (Implemented with styling)
+    - [x] **C. Number Formatting**
+        - [x] Update `types.ts` (EntityInfo)
+        - [x] Update `utils/formatNumber.ts`
+        - [x] Update `pages/SchedulesPage.tsx` (Entity Info form - EntityInfoSchedule.tsx updated instead)
+    - [x] **D. Documentation**
+        - [x] Create `QUICK_START_NO_DOCKER.md`
+    - [x] **E. UI/UX Improvements**
+        - [x] Add Theme Switcher (Dark/Light/System) button
